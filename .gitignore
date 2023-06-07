@@ -1,0 +1,5 @@
+.env
+.idea/
+
+# Ignore sqlite database
+db.sqlite3
