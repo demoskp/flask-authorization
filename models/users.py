@@ -19,11 +19,7 @@ class User(db.Model):
     def password(self, value):
         self._password = pwd_context.hash(value)
 
-    roles = db.relationship(
-        "Role",
-        secondary="user_roles",
-        back_populates="users",
-    )
+    roles = db.relationship("Role", secondary="user_roles", back_populates="users")
 
     def has_role(self, role):
         return bool(
@@ -42,15 +38,11 @@ class Role(db.Model):
     name = db.Column(db.String(36), nullable=False)
     slug = db.Column(db.String(36), nullable=False, unique=True)
 
-    users = db.relationship(
-        "User",
-        secondary="user_roles",
-        back_populates="roles",
-    )
+    users = db.relationship("User", secondary="user_roles", back_populates="roles")
 
 
 class UserRole(db.Model):
     __tablename__ = "user_roles"
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
-    name = db.Column(db.Integer, db.ForeignKey("roles.id"), primary_key=True)
+    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"), primary_key=True)
