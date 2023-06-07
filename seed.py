@@ -1,9 +1,17 @@
+import os
+
 from sqlalchemy import text
 from app import db, app
 
-sql = open("seed_data.sql", "r")
-statement = sql.read()
+result = os.scandir("seed")
 
 with app.app_context():
-    db.session.execute(text(statement))
+    for item in result:
+        if item.is_file:
+            sql = open(item.path, "r")
+            statement = sql.read()
+            db.session.execute(text(statement))
+
     db.session.commit()
+
+
